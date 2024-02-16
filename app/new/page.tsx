@@ -1,6 +1,6 @@
 "use client";
 import { use, useEffect, useState } from "react";
-export default function Home() {
+export default function Home1() {
   const [message, setMessage] = useState("is connecting");
 
   useEffect(() => {
