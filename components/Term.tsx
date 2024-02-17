@@ -1,16 +1,20 @@
 "use client";
 import { use, useEffect, useState } from "react";
-export default function Home1() {
+export default function Term() {
   const [message, setMessage] = useState("is connecting");
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     // Reference to the iframe
     const iframe = document.getElementById('myFrame');
 
     // Function to handle messages received from the iframe
-    const handleMessage = event => {
+    const handleMessage = (event:any) => {
         // Log the message received from the iframe
         console.log('Message from iframe:', event.data);
+        if(event.data === 'Error'){
+          setIsError(true);
+        }
         setMessage(event.data);
     };
 
@@ -25,10 +29,11 @@ export default function Home1() {
 
 const sendMessageToIframe = () => {
     // Reference to the iframe
+    setIsError(false);
     const iframe = document.getElementById('myFrame') as HTMLIFrameElement;
 
     // Send a message to the iframe
-    iframe.contentWindow?.postMessage('54.81.98.197|22|ubuntu|12345678', '*');
+    iframe.contentWindow?.postMessage('hello', '*');
 };
 
 useEffect(() => {
@@ -36,22 +41,24 @@ useEffect(() => {
 }, []);
 
 return (
-  <div className="w-[600px] h-[400px] relative">
+
+
+  <div className="w-[600px] h-[460px] flex-col items-center justify-center">
  
     
-    <div className="w-[600px] h-[400px] z-0">
-        <iframe id="myFrame" src="http://localhost:8888" width="600" height="400"></iframe>
-        
+    { <div className={`w-[600px] h-[400px] ${isError?'hidden' : ''} `}>
+        <iframe id="myFrame" src="http://localhost:8888?hostname=54.81.98.197&username=ubuntu&password=MTIzNDU2Nzg=" width="600" height="400"></iframe>
     </div>
-    {message != "connected" &&
-    <div className="w-[600px] h-[400px] absolute top-0 z-50 bg-red-900 text-center">
-      {
-        message == "is connecting" ?
-        <h1>Connecting...</h1> :
-        <button onClick={sendMessageToIframe}>Try again</button>
-      }
-    </div>
-  }
+    }
+    {isError && <button className="bg-red-900 w-full text-white " onClick={sendMessageToIframe}>
+        Try Again
+    </button>
+    }
+    
+   
+
   </div>
+
+
 );
 }

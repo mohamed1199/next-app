@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+
+  frontend:
+    image: frontend:latest
+    container_name: frontend-app
+    restart: always
+    working_dir: /app
+    depends_on:
+      - nginx
+    ports:
+      - 3000:3000
+    networks:
+      - web_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./:/var/www
+      - /home/ubuntu/config/nginx:/etc/nginx/conf.d
+      - /home/ubuntu/config/certbot/www:/var/www/certbot/
+    networks:
+      - web_network
+  
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - /home/ubuntu/config/certbot/www/:/var/www/certbot/
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    driver: bridge
