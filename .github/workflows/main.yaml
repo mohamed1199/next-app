@@ -11,10 +11,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Use Node.js 14.x
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '14'
+          node-version: 20
     
       - name: Install dependencies
         run: npm install
@@ -40,9 +40,9 @@ jobs:
           name: package
 
       - name: Set up Node.js and publish
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: 14.x
+          node-version: 20
           registry-url: https://npm.pkg.github.com/
           scope: "@mohamed1199"
 
