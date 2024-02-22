@@ -47,9 +47,9 @@ jobs:
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
-          scope: "@mohamed1199"
+          scope: "mohamed1199"
 
-      - run: echo "registry=https://npm.pkg.github.com/@mohamed1199" >> .npmrc
+      - run: echo "registry=https://npm.pkg.github.com/mohamed1199" >> .npmrc
       - run: npm publish $(ls *.tgz)
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
