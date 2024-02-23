@@ -25,6 +25,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - run: npm install
+    - run: npm run build
     - run: node client.js
       env:
         POSTGRES_HOST: postgres
