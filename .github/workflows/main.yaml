@@ -1,31 +1,34 @@
-name: "CodeQL Analysis"
+name: Release Component
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main  
 
 jobs:
-  analyze:
-    name: Analyze
+  release:
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ['javascript']
-
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        languages: ${{ matrix.language }}
+        node-version: 20
 
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    - name: Install dependencies
+      run: npm install  
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+    - name: Build component
+      run: npm run build 
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
