@@ -1,25 +1,32 @@
-name: Deploy Images to GHCR
+name: Postgres Service Example
 
 on:
   push:
     branches:
-      - main
+    - main
 
 jobs:
-  push-to-ghcr:
+  container-job:
     runs-on: ubuntu-latest
+    container:
+      image:  node:10.16-jessie
+
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+        - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
-      - name: 'Checkout GitHub Action'
-        uses: actions/checkout@main
-
-      - name: 'Login to GitHub Container Registry'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{github.actor}}
-          password: ${{secrets.GITHUB_TOKEN}}
-
-      - name: 'Build & Push Image'
-        run: |
-          docker build . --tag ghcr.io/mohamed1199/nextapp:latest
-          docker push ghcr.io/mohamed1199/nextapp:latest
+    - uses: actions/checkout@v1
+    - run: npm ci
+    - run: node client.js
+      env:
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
