@@ -1,21 +1,24 @@
 name: Deploy a Release
 
 on:
-  push:
-    branches:
-      - main
-
+ push:
+   branches:
+     - main
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: 22
-        script: | 
-          whoami
+ deploy:
+   name: Deploy
+   runs-on: ubuntu-latest
+   steps:
+
+   - name: Deploy with SSH
+     uses: appleboy/ssh-action@v1.0.3
+     with:
+       host: ${{ secrets.HOST }}
+       username: ${{ secrets.USERNAME }}
+       password: ${{ secrets.PASSWORD }}
+       port: 22
+       script: |
+         git clone --branch v21 https://github.com/mohamed1199/next-app.git
+         cd next-app
+         docker build -t nextapp:v21 .
+         docker run -p 3000:3000 -d nextapp:v21
