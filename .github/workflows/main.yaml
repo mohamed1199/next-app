@@ -1,34 +1,21 @@
-name: Release Component
+name: Deploy a Release
 
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
-  release:
+  build:
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.3
       with:
-        node-version: 20
-
-    - name: Install dependencies
-      run: npm install  
-
-    - name: Build component
-      run: npm run build 
-
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v${{ github.run_number }}
-        release_name: Release v${{ github.run_number }}
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: 22
+        script: | 
+          whoami
