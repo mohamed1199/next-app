@@ -1,31 +1,32 @@
-name: Caching npm packages
+name: Data Passing Workflow
 
-on: push
+on: [push]
 
 jobs:
-  build:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Generate data
+      run: echo "Some data generated in job 1" > data.txt
+
+    - name: Upload data as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: data-artifact
+        path: data.txt
+
+  job2:
+    needs: job1
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
 
-    - name: Cache node modules
-      id: cache-nodemodules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-node-modules
+    - name: Download data artifact
+      uses: actions/download-artifact@v2
       with:
-        # caching node_modules
-        path: node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-    
-    - name: Install Dependencies
-      if: steps.cache-nodemodules.outputs.cache-hit != 'true'
-      run: npm install
+        name: data-artifact
+        path: data/
 
-    - name: Build
-      run: npm run build
+    - name: Use data in job 2
+      run: cat data/data.txt
