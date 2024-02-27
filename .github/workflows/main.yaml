@@ -10,7 +10,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Create test file
-      run: echo hello > test.txt && exit
+      rund: echo hello > test.txt && exit
 
     - uses: actions/upload-artifact@v4
       with:
