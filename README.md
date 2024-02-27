@@ -1,4 +1,4 @@
-![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+[![Remove Artifact](https://github.com/mohamed1199/next-app/actions/workflows/main.yaml/badge.svg)](https://github.com/mohamed1199/next-app/actions/workflows/main.yaml)
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
