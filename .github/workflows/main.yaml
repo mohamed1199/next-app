@@ -1,23 +1,29 @@
-name: PR Approve 
+name: Matrix Example
 
 on:
-  pull_request:
-    branches: [ main ]
+  push:
+    branches:
+      - main
 
 jobs:
-  approve: 
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-18.04]
+        node: [18, 20]
 
+    runs-on: ${{ matrix.os }}
     steps:
-    - name: Approve
-      run: echo "For security reasons, all pull requests need to be approved first before running any automated CI."
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-  build: 
-    runs-on: ubuntu-latest
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node }}
 
-    needs: [approve] # Require the first step to finish
-    environment:
-      name: Pull Request Rule
-    steps:
-    - name: Approve
-      run: echo "Start Building..."
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build the App
+      run: npm run build
