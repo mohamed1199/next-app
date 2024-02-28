@@ -1,22 +1,23 @@
-name: Remove Artifact 
+name: PR Approve 
 
-on: [push]
+on:
+  pull_request_target:
+    branches: [ main ]
 
 jobs:
-  cleanup:
+  approve: 
     runs-on: ubuntu-latest
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    - name: Approve
+      run: echo "For security reasons, all pull requests need to be approved first before running any automated CI.""
 
-    - name: Create test file
-      rund: echo hello > test.txt && exit
+  build: 
+    runs-on: ubuntu-latest
 
-    - uses: actions/upload-artifact@v4
-      with:
-          name: my-artifact
-          path: test.txt
-
-    - uses: geekyeggo/delete-artifact@v4
-      with:
-          name: my-artifact
+    needs: [approve] # Require the first step to finish
+    environment:
+      name: Pull Request Rule
+    steps:
+    - name: Approve
+      run: echo "Start Building..."
