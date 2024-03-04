@@ -8,7 +8,12 @@ jobs:
  build_and_package:
    runs-on: ubuntu-latest
    steps:
-       
+
+     - name: Initialize CodeQL
+       uses: github/codeql-action/init@v2 
+       with:
+         languages: ${{ matrix.language }}
+      
      - name: Checkout code
        uses: actions/checkout@v2
      
@@ -22,5 +27,7 @@ jobs:
      
      - name: Build
        run: npm run build
+
+       
 
 
