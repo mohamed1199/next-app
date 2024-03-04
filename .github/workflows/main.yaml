@@ -1,4 +1,4 @@
-name: Nextjs CI debug
+name: Nextjs CI
 
 on:
  push:
@@ -8,19 +8,26 @@ jobs:
  build_and_package:
    runs-on: ubuntu-latest
    steps:
-      
+     
      - name: Checkout code
        uses: actions/checkout@v2
      
      - name: Use Node.js
        uses: actions/setup-node@v4
        with:
-         node-version: 10
+         node-version: 20
      
      - name: Install dependencies
        run: npm install
      
      - name: Build
        run: npm run build
+
+     - name: Archive npm failure logs
+       uses: actions/upload-artifact@v2
+       if: failure()
+       with:
+         name: npm-logs
+         path: ~/.npm/_logs   
 
 
