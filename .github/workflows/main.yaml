@@ -1,4 +1,4 @@
-name: Nextjs CI logs
+name: Nextjs CI 
 
 on:
  push:
