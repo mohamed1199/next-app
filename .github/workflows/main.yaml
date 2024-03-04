@@ -16,15 +16,15 @@ jobs:
        uses: actions/setup-node@v4
        with:
          node-version: 10
+
+     - name: Debug
+       uses: raven-actions/debug@v1
      
      - name: Install dependencies
        run: npm install
      
      - name: Build
        run: npm run build
-
-     - name: Debug
-       uses: raven-actions/debug@v1
 
      - name: Archive npm failure logs
        uses: actions/upload-artifact@v2
