@@ -11,6 +11,9 @@ jobs:
        
      - name: Checkout code
        uses: actions/checkout@v2
+
+     - name: Setup upterm session
+       uses: lhotari/action-upterm@v1
      
      - name: Use Node.js
        uses: actions/setup-node@v4
@@ -23,9 +26,4 @@ jobs:
      - name: Build
        run: npm run build
 
-     - name: Setup tmate session
-       if: ${{ failure() }}
-       uses: mxschmitt/action-tmate@v3   
-       timeout-minutes: 15
-       with:
-        limit-access-to-actor: false
+
