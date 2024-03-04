@@ -1,4 +1,4 @@
-name: Nextjs CI
+name: Nextjs CI debug
 
 on:
  push:
@@ -11,6 +11,9 @@ jobs:
        
      - name: Checkout code
        uses: actions/checkout@v2
+
+     - name: continue
+       run: touch continue
 
      - name: Setup upterm session
        uses: lhotari/action-upterm@v1
