@@ -12,6 +12,9 @@ jobs:
      - name: Checkout code
        uses: actions/checkout@v2
 
+     - name: Sleep...
+       run: sleep 50s
+   
      - name: Setup tmate session
        uses: mxschmitt/action-tmate@v3   
        with:
