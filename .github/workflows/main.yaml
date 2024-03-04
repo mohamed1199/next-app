@@ -1,4 +1,4 @@
-name: Nextjs CI 
+name: Nextjs CI with debug mode
 
 on:
  push:
